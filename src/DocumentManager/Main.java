@@ -9,8 +9,11 @@ public class Main {
         String tip_system = "档案系统";
         String tip_menu = "请选择菜单：";
         String tip_exit = "系统退出，谢谢使用！";
-        String infos = "******欢迎进入" + tip_system + "******\n\t" +
-                "1.登录\n\t" + "2.退出\n" +
+        String infos = "******欢迎进入" +
+                tip_system +
+                "******\n\t" +
+                "1.登录\n\t" +
+                "2.退出\n" +
                 "*************************";
 
         Scanner in = new Scanner(System.in);
