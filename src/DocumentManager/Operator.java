@@ -1,5 +1,4 @@
 package DocumentManager;
-
 import java.util.Scanner;
 
 public class Operator extends User{
@@ -60,5 +59,4 @@ public class Operator extends User{
             }
         }
     }
-
 }
