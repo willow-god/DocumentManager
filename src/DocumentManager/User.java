@@ -9,6 +9,9 @@ public abstract class User {
     private String password;
     private String role;
 
+    String uploadpath = "/Users/air/Documents/java/uploadfile/";
+    String downloadpath = "/Users/air/Documents/java/downloadfile/";
+
     User(String name,String password,String role){
         this.name=name;
         this.password=password;
@@ -25,7 +28,7 @@ public abstract class User {
             return false;
     }
 
-    public boolean downloadFile(String filename) throws IOException{
+    public boolean downloadFile(String filename) throws IOException,SQLException{
         double ranValue=Math.random();
         if (ranValue>0.5)
             throw new IOException( "Error in accessing file" );

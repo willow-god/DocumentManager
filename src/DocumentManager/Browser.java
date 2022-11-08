@@ -37,6 +37,8 @@ public class Browser extends User{
                         downloadFile(filename);
                     } catch (IOException e) {
                         System.out.println("文件错误" + e.getMessage());
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
                     break;
                 case 2:
