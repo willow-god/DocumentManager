@@ -22,12 +22,12 @@ public class Administrator extends User{
     }
 
     public void delUser(String name) throws SQLException{
-        DataProcessing.delete(name);
+        DataProcessing.deleteUser(name);
         System.out.println("删除成功\n");
     }
 
     public void addUser(String name,String password,String role) throws SQLException {
-        DataProcessing.insert(name,password,role);
+        DataProcessing.insertUser(name,password,role);
     }
 
     public void listUser() {
@@ -40,8 +40,9 @@ public class Administrator extends User{
         User user;
         while(e.hasMoreElements()) {
             user = e.nextElement();
-            System.out.println("用户名:" + user.getName() + " 密码:" +
-                    user.getPassword() + " 角色:" + user.getRole());
+            System.out.println("用户名:" + user.getName() +
+                    " 密码:" + user.getPassword() +
+                    " 角色:" + user.getRole());
         }
     }
 
@@ -146,6 +147,7 @@ public class Administrator extends User{
                         System.out.println("数据库异常"+e.getMessage());
                     }
                     System.out.println("修改成功！");
+                    break;
                 case 8:
                     exitSystem();
                     break;

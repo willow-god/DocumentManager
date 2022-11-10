@@ -13,18 +13,26 @@ public class Operator extends User{
     }
 
     public void uploadFile(String ID,String name,String filepath,String description) throws IOException, SQLException {
-        System.out.println("上传成功！\n");
+
 //        Scanner in = new Scanner(System.in);
-//        File srcFile = new File(filepath);
-//        String filename = srcFile.getName();
-//        File destFile = new File(uploadpath + filename);
-//        destFile.createNewFile();
-//        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-//        //存入时间，由于我们还没有写存储，所以这里暂时空
-//        FileInputStream fis = new FileInputStream(srcFile);
-//        FileOutputStream fos = new FileOutputStream(destFile);
-//
-//        byte[] buf = new byte[1024];
+        File srcFile = new File(filepath);
+        String filename = srcFile.getName();
+        File destFile = new File(uploadpath + filename);
+        destFile.createNewFile();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        DataProcessing.insertDoc(ID,name,timestamp,description,filename);
+
+        FileInputStream fis = new FileInputStream(srcFile);
+        FileOutputStream fos = new FileOutputStream(destFile);
+
+        byte[] buf = new byte[1024];
+        int len = 0;
+        while((len = fis.read(buf))!=-1) {
+            fos.write(buf,0,len);
+        }
+        fis.close();
+        fos.close();
+        System.out.println("上传成功！");
     }
 
     @Override
@@ -47,10 +55,10 @@ public class Operator extends User{
             switch (option) {
                 case 1:
                     System.out.println("上传文件：");
-                    System.out.print("请输入文件名：");
+                    System.out.print("用户名："+this.getName());
                     String name;
-                    name = in.next();
-                    System.out.print("请输入档案号：");
+                    name = this.getName();
+                    System.out.print("\n请输入档案号：");
                     String ID;
                     ID = in.next();
                     System.out.print("请输入文件路径：");
@@ -66,7 +74,6 @@ public class Operator extends User{
                     } catch (IOException e) {
                         System.out.println("文件错误");
                     }
-                    System.out.println("添加文件成功！");
                     break;
                 case 2:
                     System.out.println("下载文件：");
@@ -80,7 +87,6 @@ public class Operator extends User{
                     } catch (SQLException e) {
                         System.out.println("数据库错误" + e.getMessage());
                     }
-                    System.out.println("下载成功！");
                     break;
                 case 3:
                     try {
@@ -88,8 +94,7 @@ public class Operator extends User{
                     } catch (SQLException e) {
                         System.out.println("数据库错误" + e.getMessage());
                     }
-                    System.out.println("文件列表如下：");
-                    System.out.println("嗷嗷嗷");
+                    break;
                 case 4:
                     System.out.println("修改密码");
                     System.out.println("请输入新密码:");
