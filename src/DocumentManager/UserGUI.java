@@ -170,14 +170,97 @@ public class UserGUI {
                 getConfirmDialog();
             }
         });
+        cancelButton.addActionListener(new ActionListener(){        //点击“取消”按钮清除该面板上的组件回到上一个面板
+            public void actionPerformed(ActionEvent e) {
+                getCancel();
+            }
+        });
     }
 
     public static void getDeleteUserGUI() throws SQLException {
+        //画大表，在表里呈现所有元素，后面只需要选中即可
+        setUser_name_role();//获得信息
+        Enumeration<User> e = DataProcessing.getAllUser();
+        String []columnNames = {"用户名","密码","属性"};
+        String [][]tableValues = new String[100][3];
+        int i = Client.get_Rows();
+        //循环得到表里的各个数据，然后给放到所建立的数组里
+        while(e.hasMoreElements()){
+            User user = e.nextElement();
+            String userName = user.getName();
+            tableValues[i][0]=userName;
+            String userPassword = user.getPassword();
+            tableValues[i][1] = userPassword;
+            String userRole = user.getRole();
+            tableValues[i][2] = userRole;
+            i++;
+        }
 
+        //现在才开始写GUI
+        tableModel = new DefaultTableModel(tableValues,columnNames);
+        table = new JTable(tableModel);
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setPreferredSize(new Dimension(250, 200));
+        JButton confirmButton = new JButton("确定");
+        JButton cancelButton = new JButton("取消");
+        deletePanel.setLayout(new BorderLayout());
+        JPanel jp = new JPanel();
+        jp.add(confirmButton);
+        jp.add(cancelButton);
+        deletePanel.add(BorderLayout.CENTER,scrollPane);
+        deletePanel.add(BorderLayout.SOUTH,jp);
+
+
+        confirmButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                getConfirmDialog();
+            }
+        });
+        cancelButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                getCancel();
+            }
+        });
     }
 
     public static void getAddUserGUI() throws SQLException {
+        setUser_name_role();
 
+        roleComboBox = new JComboBox<String>(usersRole);
+        roleComboBox.setPreferredSize(new Dimension(150,24));
+
+        JButton confirmButton = new JButton("确定");
+        JButton cancelButton = new JButton("取消");
+
+        addPanel.setLayout(new GridLayout(4,1,5,5));
+        JPanel jp1 = new JPanel();
+        jp1.add(nameLabel);
+        jp1.add(nameField);
+        JPanel jp2 = new JPanel();
+        jp2.add(passwordLabel);
+        jp2.add(passwordField);
+        JPanel jp3 = new JPanel();
+        jp3.add(roleLabel);
+        jp3.add(roleComboBox);
+        JPanel jp4 = new JPanel();
+        jp4.add(confirmButton);
+        jp4.add(cancelButton);
+        addPanel.add(jp1);
+        addPanel.add(jp2);
+        addPanel.add(jp3);
+        addPanel.add(jp4);
+
+        confirmButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                getConfirmDialog();
+            }
+        });
+
+        cancelButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                getCancel();
+            }
+        });
     }
 
     public static void setUser_name_role() throws SQLException {
@@ -217,7 +300,8 @@ public class UserGUI {
         //在这里才开始创建那个弹窗，设置弹窗的一系列玩意
         JDialog dialog = new JDialog();
         dialog.setTitle("消息");
-        dialog.setBounds((screenWidth-frameWidth)/2+120, (screenHeight-frameHeight)/2+100, 200, 230);
+        dialog.setSize(200, 230);
+        dialog.setLocationRelativeTo(null);
         dialog.add(new JPanel());
         dialog.add(jp1);
         dialog.add(jp2);
@@ -239,34 +323,63 @@ public class UserGUI {
                 int index = tabbedPane.getSelectedIndex();
                 if(index == 0){
                     name = (String)nameComboBox.getSelectedItem();
-//                    try {
-//                        //更新信息
-//                        Client.UpdateUser(name, password, role, userManageFrame);
-//                    } catch (IOException e1) {
-//                        // TODO Auto-generated catch block
-//                        e1.printStackTrace();
-//                    }
+                    try {
+                        //更新信息
+                        Client.UpdateUser(name, password, role, userManageFrame);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
 
                 }else if(index == 1){
                     int row = table.getSelectedRow();
                     String getName = table.getValueAt(row,0).toString();
-//                    try {
-//                        Client.DelUser(getName, userManageFrame);
-//                    } catch (IOException e1) {
-//                        // TODO Auto-generated catch block
-//                        e1.printStackTrace();
-//                    }
+                    try {
+                        Client.DelUser(getName, userManageFrame);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
 
                 }else{
 
-//                    try {
-//                        Client.AddUser(name, password, role, userManageFrame);
-//                    } catch (IOException e1) {
-//                        // TODO Auto-generated catch block
-//                        e1.printStackTrace();
-//                    }
+                    try {
+                        Client.AddUser(name, password, role, userManageFrame);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                 }
+                jdialog.setBounds((screenWidth-frameWidth)/2, (screenHeight-frameHeight)/2, 200, 130);
+                JPanel jp1 = new JPanel();
+                JPanel jp2 =new JPanel();
+                jdialog.add(jp1);
+                jdialog.add(jp2);
+                jdialog.setVisible(true);
+                jp1.add(label);
+                JButton button = new JButton("确定");
+                jp2.add(button);
+
+                button.addActionListener(new ActionListener(){
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        dialog.dispose();
+                        jdialog.dispose();
+                    }
+                });
             }
         });
+
+        cancelButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.dispose();
+            }
+        });
+    }
+    public static void getCancel(){
+        modifyPanel.removeAll();
+        deletePanel.removeAll();
+        addPanel.removeAll();
+        nameField.setText(null);
+        passwordField.setText(null);
+        userManageFrame.dispose();
     }
 }

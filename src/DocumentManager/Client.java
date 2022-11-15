@@ -69,8 +69,32 @@ public class Client extends JFrame {
         } catch (SQLException e) {
             System.out.println("Client中查找个人角色不对");
         }
+    }
 
+    static void UpdateUser(String name,String password,String role,JFrame frame) throws IOException {
+        try {
+            DataProcessing.update(name,password,role);
+        } catch (SQLException e) {
+            System.out.println("Client|update出问题啦！！！");
+        }
+        jFrame = frame;
+    }
 
+    static void DelUser(String del_name,JFrame frame) throws IOException{
+        try {
+            DataProcessing.deleteUser(del_name);
+        } catch (SQLException e) {
+            System.out.println("Client|delete出问题啦！！！");
+        }
+        jFrame = frame;
+    }
+
+    static void AddUser(String name, String password,String role,JFrame frame) throws IOException{
+        try {
+            DataProcessing.insertUser(name,password,role);
+        } catch (SQLException e) {
+            System.out.println("Client|Add出问题啦！！！");
+        }
     }
 
     static int get_Rows() {
