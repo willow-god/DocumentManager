@@ -1,12 +1,10 @@
 package DocumentManager;
 
 import javax.swing.*;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.EOFException;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public class Client extends JFrame {
     static JFrame jFrame;
@@ -95,6 +93,30 @@ public class Client extends JFrame {
         } catch (SQLException e) {
             System.out.println("Client|Add出问题啦！！！");
         }
+    }
+
+    static void Upload(String ID,String Creator,
+                       String description,String filename/*文件位置*/,
+                       JFrame frame) throws IOException, SQLException {
+        jFrame = frame;
+        String uploadpath = "D:\\DownLoad\\javatestdocument\\uploadfile\\";
+        File srcfile=new File(filename.trim());
+        String Filename = srcfile.getName();
+        File destFile = new File(uploadpath + Filename);
+        destFile.createNewFile();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        DataProcessing.insertDoc(ID,Creator,timestamp,description,filename);
+
+        FileInputStream fis = new FileInputStream(srcfile);
+        FileOutputStream fos = new FileOutputStream(destFile);
+
+        byte[] buf = new byte[1024];
+        int len = 0;
+        while((len = fis.read(buf))!=-1) {
+            fos.write(buf,0,len);
+        }
+        fis.close();
+        fos.close();
     }
 
     static int get_Rows() {

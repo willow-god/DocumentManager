@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class FileManageGUI {
@@ -141,6 +142,86 @@ public class FileManageGUI {
                     File selectedFile = fileChooser.getSelectedFile();
                     archivesNameField.setText(selectedFile.getAbsolutePath());
                 }
+            }
+        });
+
+        openButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                int flag = fileChooser.showOpenDialog(uploadPanel);
+                if (flag == JFileChooser.APPROVE_OPTION) {
+                    //文件选择的类，人家已经写了就不用管了，然后后面显示文件的绝对路径
+                    //绝对路径指的是以D://或者其他盘符为基本位置的路径
+                    //相对路径指的是以本文件夹为基本位置的路径
+                    File selectedFile = fileChooser.getSelectedFile();
+                    archivesNameField.setText(selectedFile.getAbsolutePath());
+                }
+            }
+        });
+
+        uploadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //写了一个弹窗，显示的事是否确认上传~
+                JDialog dialog = new JDialog();
+                dialog.setTitle("消息");
+                dialog.setLayout(new GridLayout(3,1,0,0));
+                JLabel jl = new JLabel();
+                jl.setText("确定上传该文件吗?");
+                dialog.setSize(200, 230);
+                dialog.setLocationRelativeTo(null);
+                JButton confirmButton = new JButton("确定");
+                JButton cancelButton = new JButton("取消");
+                JPanel jp1 = new JPanel();
+                jp1.add(jl);
+                JPanel jp2 =new JPanel();
+                jp2.add(confirmButton);
+                jp2.add(cancelButton);
+
+                dialog.add(new JPanel());
+                dialog.add(jp1);
+                dialog.add(jp2);
+                dialog.setVisible(true);
+
+                //这里开始编辑弹窗里，两个按钮的作用
+                confirmButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        //这里获取的是刚才主页面得到的那玩意（档案号，位置）
+                        String archivesNumber = archivesNumberField.getText();
+                        String archivesDescription = archivesDescriptionArea.getText();
+                        String archivesName = archivesNameField.getText();
+                        String uploaderName = Client.get_Name();
+
+                        JDialog jdialog = new JDialog();
+                        jdialog.setTitle("消息");
+                        jdialog.setLayout(new GridLayout(2,1,0,0));
+
+                        //这里的label后面会给里面添加内容的，就是上传成功与否的内容
+                        JLabel label = new JLabel();
+
+                        jdialog.setSize(200, 130);
+                        JButton button = new JButton("确定");
+                        JPanel jp1 = new JPanel();
+                        jp1.add(label);
+                        JPanel jp2 =new JPanel();
+                        jp2.add(button);
+                        jdialog.add(jp1);
+                        jdialog.add(jp2);
+
+                        //开始试图保存文件~
+                        try {
+                            Client.Upload(archivesNumber,uploaderName,archivesDescription,archivesName,archivesManageFrame);
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                        }
+                        File infile = new File(archivesName);
+
+                    }
+                });
             }
         });
     }

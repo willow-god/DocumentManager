@@ -319,6 +319,8 @@ public class UserGUI {
                 jdialog.setTitle("提示");
                 jdialog.setLayout(new GridLayout(2,1,0,0));
                 JLabel label = new JLabel();
+                label.setText("添加成功");
+                jdialog.setLocationRelativeTo(null);
 
                 int index = tabbedPane.getSelectedIndex();
                 if(index == 0){
@@ -326,8 +328,10 @@ public class UserGUI {
                     try {
                         //更新信息
                         Client.UpdateUser(name, password, role, userManageFrame);
+
                     } catch (IOException e1) {
                         e1.printStackTrace();
+                        label.setText("添加失败");
                     }
 
                 }else if(index == 1){
@@ -347,7 +351,7 @@ public class UserGUI {
                         e1.printStackTrace();
                     }
                 }
-                jdialog.setBounds((screenWidth-frameWidth)/2, (screenHeight-frameHeight)/2, 200, 130);
+                jdialog.setSize(200, 130);
                 JPanel jp1 = new JPanel();
                 JPanel jp2 =new JPanel();
                 jdialog.add(jp1);
