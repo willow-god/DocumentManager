@@ -3,12 +3,13 @@ package DocumentManager;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.sql.SQLException;
+import java.util.Enumeration;
 
 public class FileManageGUI {
     static JFrame archivesManageFrame = new JFrame("文件管理页面");
@@ -256,6 +257,123 @@ public class FileManageGUI {
     }
 
     public static void getDownloadFileGUI() throws SQLException{
+        Enumeration <Doc> e = DataProcessing.getAllDocs();
+        String []columnNames = {"档案号","档案号","时间","描述","文件名"};
+        String [][]tableValues = new String[100][5];
+        int i = 0;
+        //循环获取Docs里面的所有玩意放到string类型数组里
+        while (e.hasMoreElements()) {
+            Doc doc = e.nextElement();
+            String number =
+            tableValues[i][0] = doc.getID();
+            tableValues[i][1] = doc.getCreator();
+            tableValues[i][2] = doc.getTimestamp().toString();
+            tableValues[i][3] = doc.getDescription();
+            tableValues[i][4] = doc.getFilename();
+            i++;
+        }
 
+        //添加表格，添加按钮等
+        DefaultTableModel tableModel= new DefaultTableModel(tableValues,columnNames);
+        final JTable table = new JTable(tableModel);
+        JScrollPane scrollPane = new JScrollPane(table);
+        JButton downloadButton = new JButton("下载");
+        JButton cancelButton = new JButton("取消");
+        downloadPanel.setLayout(new BorderLayout());
+        JPanel jp = new JPanel();
+        jp.add(downloadButton);
+        jp.add(cancelButton);
+        downloadPanel.add(BorderLayout.CENTER,scrollPane);
+        downloadPanel.add(BorderLayout.SOUTH,jp);
+
+        downloadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = table.getSelectedRow();
+                if (row == -1) {
+                    JOptionPane.showMessageDialog(null,"请选择文件","提示",JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JFileChooser fileChooser = new JFileChooser();
+                    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                    int flag = fileChooser.showSaveDialog(downloadPanel);
+                    String ID = table.getValueAt(row,0).toString();
+                    final JDialog jDialog = new JDialog();
+                    jDialog.setTitle("提示");
+                    jDialog.setLayout(new GridLayout(2,1,0,0));
+
+                    final JLabel label = new JLabel();
+
+                    jDialog.setSize(200,130);
+                    jDialog.setLocationRelativeTo(null);
+                    JButton button = new JButton("确定");
+                    JPanel jp1 = new JPanel();
+                    jp1.add(label);
+                    JPanel jp2 = new JPanel();
+                    jp2.add(button);
+                    jDialog.add(jp1);
+                    jDialog.add(jp2);
+
+                    try {
+                        Client.Download(ID,archivesManageFrame);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+
+                    Doc doc = null;
+                    try {
+                        doc = DataProcessing.searchDoc(ID);
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                    if (doc == null) {
+                        System.out.println("下载文件失败");
+                    }
+                    try {
+                        String uploadpath = "D:\\DownLoad\\javatestdocument\\uploadfile\\";
+                        File srcFile = new File(doc.getFilename());
+                        String filename = srcFile.getName();
+                        File destFile = new File(fileChooser.getSelectedFile().getAbsolutePath() +"\\"+ filename);
+                        if (!(destFile.exists())) {
+                            destFile.createNewFile();
+                        }
+                        //FileInputStream fis = new FileInputStream(srcFile);
+                        //FileOutputStream fos = new FileOutputStream(destFile);
+
+                        BufferedInputStream fis = new BufferedInputStream(new FileInputStream(srcFile));
+                        BufferedOutputStream fos = new BufferedOutputStream(new FileOutputStream(destFile));
+
+                        byte[] buf = new byte[1024];
+                        int len = 0;
+                        while((len = fis.read(buf)) != -1) {
+                            fos.write(buf,0,len);
+                        }
+                        fos.flush();
+                        fis.close();
+                        fos.close();
+                        System.out.println("下载成功！");
+                    } catch (IOException ex) {
+                        label.setText("文件下载失败");
+                        ex.printStackTrace();
+                    }
+                    jDialog.setVisible(true);
+
+                    button.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            jDialog.dispose();
+                        }
+                    });
+                }
+            }
+        });
+
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                downloadPanel.removeAll();
+                uploadPanel.removeAll();
+                archivesManageFrame.dispose();
+            }
+        });
     }
 }

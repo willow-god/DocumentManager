@@ -119,6 +119,10 @@ public class Client extends JFrame {
         fos.close();
     }
 
+    static void Download(String ID,JFrame frame) throws IOException {
+        jFrame = frame;
+    }
+
     static int get_Rows() {
         return row1;
     }
