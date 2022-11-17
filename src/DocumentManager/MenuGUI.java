@@ -99,7 +99,17 @@ public class MenuGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int index = 0;
-                //文件下次写
+                //文件
+                FileManageGUI.playArchivesManageGUI(index);
+            }
+        });
+
+        fileMenu.getItem(1).addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int index = 1;
+                //文件
+                FileManageGUI.playArchivesManageGUI(index);
             }
         });
     }

@@ -25,6 +25,7 @@ public class FileManageGUI {
         frameWidth = archivesManageFrame.getWidth();
         frameHeight = archivesManageFrame.getHeight();
 
+
         //添加两个选择，和之前那个一样
         tabbedPane.add("档案上传",uploadPanel);
         tabbedPane.add("档案下载",downloadPanel);
@@ -171,13 +172,13 @@ public class FileManageGUI {
                 jl.setText("确定上传该文件吗?");
                 dialog.setSize(200, 230);
                 dialog.setLocationRelativeTo(null);
-                JButton confirmButton = new JButton("确定");
-                JButton cancelButton = new JButton("取消");
+                JButton confirmBotton = new JButton("确定");
+                JButton cancelBotton = new JButton("取消");
                 JPanel jp1 = new JPanel();
                 jp1.add(jl);
                 JPanel jp2 =new JPanel();
-                jp2.add(confirmButton);
-                jp2.add(cancelButton);
+                jp2.add(confirmBotton);
+                jp2.add(cancelBotton);
 
                 dialog.add(new JPanel());
                 dialog.add(jp1);
@@ -185,7 +186,7 @@ public class FileManageGUI {
                 dialog.setVisible(true);
 
                 //这里开始编辑弹窗里，两个按钮的作用
-                confirmButton.addActionListener(new ActionListener() {
+                confirmBotton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         //这里获取的是刚才主页面得到的那玩意（档案号，位置）
@@ -213,15 +214,43 @@ public class FileManageGUI {
                         //开始试图保存文件~
                         try {
                             Client.Upload(archivesNumber,uploaderName,archivesDescription,archivesName,archivesManageFrame);
+                            //这里的原网站胡写了，所以写不了了~我把它一起集成在了上面的upload函数里面~
+                            label.setText("文件上传成功！！！");
                         } catch (IOException ex) {
+                            label.setText("文件上传失败!");
                             ex.printStackTrace();
                         } catch (SQLException ex) {
+                            label.setText("文件上传失败!");
                             ex.printStackTrace();
                         }
-                        File infile = new File(archivesName);
 
+                        //弹窗里的确认按钮
+                        jdialog.setVisible(true);
+                        button.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                dialog.dispose();
+                                jdialog.dispose();
+                            }
+                        });
+                    }
+                });//确认按钮到这里就写完了！！！！嗷嗷嗷嗷
+
+                //这里开始写弹窗里的取消按钮
+                cancelBotton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        dialog.dispose();
                     }
                 });
+            }
+        });
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                downloadPanel.removeAll();
+                uploadPanel.removeAll();
+                archivesManageFrame.dispose();
             }
         });
     }
