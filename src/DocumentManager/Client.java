@@ -123,6 +123,19 @@ public class Client extends JFrame {
         jFrame = frame;
     }
 
+    static void ChangeSelfInfo(String old_password,String new_password,String new_password2) throws IOException, SQLException {
+        if (user_password.equals(old_password)) {
+            if (new_password.equals(new_password2)){
+                DataProcessing.update(user_name,new_password,user_role);
+                JOptionPane.showMessageDialog(null,"修改成功！！！","提示",JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null,"两次密码不一致！！！","提示",JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null,"老密码输错了！！！","提示",JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     static int get_Rows() {
         return row1;
     }

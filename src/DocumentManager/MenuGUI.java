@@ -112,5 +112,12 @@ public class MenuGUI {
                 FileManageGUI.playArchivesManageGUI(index);
             }
         });
+
+        personMessageMenu.getItem(0).addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PersonMessageGUI.playPersonMessageManageGUI();
+            }
+        });
     }
 }
