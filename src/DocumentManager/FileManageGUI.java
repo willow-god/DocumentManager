@@ -320,11 +320,7 @@ public class FileManageGUI {
                     }
 
                     Doc doc = null;
-                    try {
-                        doc = DataProcessing.searchDoc(ID);
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }
+                    doc = DataProcessing.searchDoc(ID);
                     if (doc == null) {
                         System.out.println("下载文件失败");
                     }

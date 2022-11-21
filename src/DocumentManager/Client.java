@@ -60,39 +60,23 @@ public class Client extends JFrame {
 //        jFrame = frame;
 
         //下面是我添加的东西，不知道对不对
-        try {
-            User user = DataProcessing.search(user_name,user_password);
-            assert user != null;
-            user_role = user.getRole();
-        } catch (SQLException e) {
-            System.out.println("Client中查找个人角色不对");
-        }
+        User user = DataProcessing.search(user_name,user_password);
+        assert user != null;
+        user_role = user.getRole();
     }
 
     static void UpdateUser(String name,String password,String role,JFrame frame) throws IOException {
-        try {
-            DataProcessing.update(name,password,role);
-        } catch (SQLException e) {
-            System.out.println("Client|update出问题啦！！！");
-        }
+        DataProcessing.update(name,password,role);
         jFrame = frame;
     }
 
     static void DelUser(String del_name,JFrame frame) throws IOException{
-        try {
-            DataProcessing.deleteUser(del_name);
-        } catch (SQLException e) {
-            System.out.println("Client|delete出问题啦！！！");
-        }
+        DataProcessing.deleteUser(del_name);
         jFrame = frame;
     }
 
     static void AddUser(String name, String password,String role,JFrame frame) throws IOException{
-        try {
-            DataProcessing.insertUser(name,password,role);
-        } catch (SQLException e) {
-            System.out.println("Client|Add出问题啦！！！");
-        }
+        DataProcessing.insertUser(name,password,role);
     }
 
     static void Upload(String ID,String Creator,
