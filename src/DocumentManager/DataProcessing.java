@@ -3,13 +3,21 @@ import java.util.*;
 import java.sql.*;
 
 public  class DataProcessing {
-    private static boolean connectToDB=false;
 
+    static Connection connection;
+    static Statement statement;
+    static ResultSet resultSet;
+    static boolean connectedToDatabase=false;
+    static String drivername = "com.mysql.cj.jdbc.Driver";
+    static String url = "jdbc:mysql://localhost:3306/users_informations";
+    static  String user = "root";
+    static String password= "293617";
     static Hashtable<String, User> users;
     static Hashtable<String,Doc> docs;
 
 
     static {
+        connectedToDatabase = false;
         users = new Hashtable<String, User>();
         users.put("jack", new Operator("jack","123","operator"));
         users.put("rose", new Browser("rose","123","browser"));
@@ -163,7 +171,7 @@ public  class DataProcessing {
     }
 
     public void disconnectFromDB() {
-        if ( connectToDB ){
+        if ( connectedToDatabase ){
             // close Statement and Connection
             try{
 //                if (Math.random()>0.5)
@@ -171,7 +179,7 @@ public  class DataProcessing {
 //            }catch ( SQLException sqlException ){
 //                sqlException.printStackTrace();
             }finally{
-                connectToDB = false;
+                connectedToDatabase = false;
             }
         }
     }
