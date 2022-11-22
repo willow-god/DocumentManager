@@ -61,8 +61,15 @@ public class Client extends JFrame {
 
         //下面是我添加的东西，不知道对不对
         User user = DataProcessing.search(user_name,user_password);
-        assert user != null;
-        user_role = user.getRole();
+        if (user != null)
+            user_role = user.getRole();
+        else {
+            JOptionPane.showMessageDialog(null,
+                    "密码和用户名不匹配，请重新输入~",
+                    "提示",
+                    JOptionPane.ERROR_MESSAGE);
+            throw new IOException();
+        }
     }
 
     static void UpdateUser(String name,String password,String role,JFrame frame) throws IOException {
@@ -89,7 +96,7 @@ public class Client extends JFrame {
         File destFile = new File(uploadpath + Filename);
         destFile.createNewFile();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        DataProcessing.insertDoc(ID,Creator,timestamp,description,filename);
+        DataProcessing.insertDoc(ID,Creator,timestamp,description,Filename);
 
         FileInputStream fis = new FileInputStream(srcfile);
         FileOutputStream fos = new FileOutputStream(destFile);

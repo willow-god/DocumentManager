@@ -21,7 +21,8 @@ public class MenuGUI {
 
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();      //获得屏幕大小
-        menuframe.setSize(dimension);
+        menuframe.setSize(dimension.width/2,dimension.height/2);
+        menuframe.setLocationRelativeTo(null);
 
         //管理菜单
         userMenu.add(new JMenuItem("修改用户"));

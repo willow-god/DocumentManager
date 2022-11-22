@@ -38,7 +38,9 @@ public class Administrator extends User{
             System.out.println("数据库错误" + e1.getMessage());
         }
         User user;
-        while(e.hasMoreElements()) {
+        while(true) {
+            assert e != null;
+            if (!e.hasMoreElements()) break;
             user = e.nextElement();
             System.out.println("用户名:" + user.getName() +
                     " 密码:" + user.getPassword() +

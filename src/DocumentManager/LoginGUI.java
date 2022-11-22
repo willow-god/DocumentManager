@@ -53,13 +53,20 @@ public class LoginGUI {
             public void actionPerformed(ActionEvent e) {
                 String loginName = nameFiled.getText();
                 String loginPassword = String.valueOf(passwordField.getPassword());
+                int Index = 0;
                 try {
                     Client.Login(loginName,loginPassword,loginframe);
                 } catch (IOException e1) {
-                    e1.printStackTrace();
+                    loginframe.dispose();
+                    systemLogin();
+                    Index = 1;
+
                 }
-                MenuGUI.playMenu();
-                loginframe.dispose();
+                if (Index == 0){
+                    MenuGUI.playMenu();
+                    loginframe.dispose();
+                }
+
             }
         });
 
