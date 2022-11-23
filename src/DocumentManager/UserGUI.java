@@ -312,8 +312,8 @@ public class UserGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String name = nameField.getText();
-                String password = String.valueOf(passwordField.getPassword());
-                String role = (String) roleComboBox.getSelectedItem();
+                String password = null;
+                String role = null;
 
                 JDialog jdialog = new JDialog();
                 jdialog.setTitle("提示");
@@ -325,6 +325,8 @@ public class UserGUI {
                 int index = tabbedPane.getSelectedIndex();
                 if(index == 0){
                     name = (String)nameComboBox.getSelectedItem();
+                    password = String.valueOf(passwordField.getPassword());
+                    role = (String) roleComboBox.getSelectedItem();
                     try {
                         //更新信息
                         Client.UpdateUser(name, password, role, userManageFrame);
@@ -344,7 +346,8 @@ public class UserGUI {
                     }
 
                 }else{
-
+                    password = String.valueOf(passwordField.getPassword());
+                    role = (String) roleComboBox.getSelectedItem();
                     try {
                         Client.AddUser(name, password, role, userManageFrame);
                     } catch (IOException e1) {
