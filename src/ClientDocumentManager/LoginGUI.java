@@ -1,4 +1,4 @@
-package ServerDocumentManager;
+package ClientDocumentManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,20 +52,12 @@ public class LoginGUI {
             public void actionPerformed(ActionEvent e) {
                 String loginName = nameFiled.getText();
                 String loginPassword = String.valueOf(passwordField.getPassword());
-                int Index = 0;
                 try {
                     Client.Login(loginName,loginPassword,loginframe);
                 } catch (IOException e1) {
                     loginframe.dispose();
                     systemLogin();
-                    Index = 1;
-
                 }
-                if (Index == 0){
-                    MenuGUI.playMenu();
-                    loginframe.dispose();
-                }
-
             }
         });
 
@@ -73,17 +65,19 @@ public class LoginGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 loginframe.dispose();
+                System.exit(0);
             }
         });
     }
 
     public static void main(String[] args) throws Exception{
-//        Client application;
+        Client application;
         systemLogin();
-        if (args.length == 0) {
+        if (args.length == 0)
+            application = new Client("127.0.0.1");
+        else
+            application = new Client(args[ 0 ]);
 
-        }else{
-
-        }
+        application.runClient();
     }
 }

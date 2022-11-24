@@ -1,4 +1,7 @@
-package ServerDocumentManager;
+package ClientDocumentManager;
+
+import ServerDocumentManager.DataProcessing;
+import ServerDocumentManager.Doc;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -216,6 +219,7 @@ public class FileManageGUI {
                         try {
                             Client.Upload(archivesNumber,uploaderName,archivesDescription,archivesName,archivesManageFrame);
                             //这里的原网站胡写了，所以写不了了~我把它一起集成在了上面的upload函数里面~
+
                             label.setText("文件上传成功！！！");
                         } catch (IOException ex) {
                             label.setText("文件上传失败!");

@@ -1,4 +1,7 @@
-package ServerDocumentManager;
+package ClientDocumentManager;
+
+import ServerDocumentManager.DataProcessing;
+import ServerDocumentManager.User;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

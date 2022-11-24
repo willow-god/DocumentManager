@@ -1,4 +1,4 @@
-package ServerDocumentManager;
+package ClientDocumentManager;
 
 import javax.swing.*;
 import java.awt.*;
