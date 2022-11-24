@@ -1,4 +1,4 @@
-package DocumentManager;
+package ServerDocumentManager;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -15,10 +15,10 @@ public class UserGUI {
     //定义一堆玩意，具体功能自己看
     static JFrame userManageFrame = new JFrame("用户管理页面");
     static JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-    static int screenWidth;
-    static int screenHeight;
-    static int frameWidth;
-    static int frameHeight;
+//    static int screenWidth;
+//    static int screenHeight;
+//    static int frameWidth;
+//    static int frameHeight;
     static JPanel modifyPanel = new JPanel();
     static JPanel deletePanel = new JPanel();
     static JPanel addPanel = new JPanel();

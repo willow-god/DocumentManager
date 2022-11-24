@@ -1,4 +1,4 @@
-package DocumentManager;
+package ServerDocumentManager;
 import java.sql.SQLException;
 import java.util.Scanner;
 

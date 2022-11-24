@@ -1,4 +1,4 @@
-package DocumentManager;
+package ServerDocumentManager;
 
 import javax.swing.*;
 import java.io.*;

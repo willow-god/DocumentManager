@@ -1,11 +1,10 @@
-package DocumentManager;
+package ServerDocumentManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.sql.ClientInfoStatus;
 
 public class LoginGUI {
     public static void systemLogin() {
