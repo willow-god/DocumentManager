@@ -296,7 +296,7 @@ public  class DataProcessing {
 //        }
         try {
             statement = connection.createStatement();
-            if(statement.execute("insert into user_info values('"+name+"','"+password+"','"+role+"')"))
+            if(!statement.execute("insert into user_info values('" + name + "','" + password + "','" + role + "')"))
                 return true;
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -320,7 +320,7 @@ public  class DataProcessing {
 
         try {
             statement = connection.createStatement();
-            if(statement.execute("delete from user_info where username='"+name+"'"))
+            if(!statement.execute("delete from user_info where username='" + name + "'"))
                 return true;
         } catch (SQLException e) {
             e.printStackTrace();

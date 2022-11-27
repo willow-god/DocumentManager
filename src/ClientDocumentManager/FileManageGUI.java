@@ -135,30 +135,12 @@ public class FileManageGUI {
         panel9.add(cancelButton);
         uploadPanel.add(panel9);
 
-        openButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                int flag = fileChooser.showOpenDialog(uploadPanel);
-                if (flag == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    archivesNameField.setText(selectedFile.getAbsolutePath());
-                }
-            }
-        });
-
-        openButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                int flag = fileChooser.showOpenDialog(uploadPanel);
-                if (flag == JFileChooser.APPROVE_OPTION) {
-                    //文件选择的类，人家已经写了就不用管了，然后后面显示文件的绝对路径
-                    //绝对路径指的是以D://或者其他盘符为基本位置的路径
-                    //相对路径指的是以本文件夹为基本位置的路径
-                    File selectedFile = fileChooser.getSelectedFile();
-                    archivesNameField.setText(selectedFile.getAbsolutePath());
-                }
+        openButton.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            int flag = fileChooser.showOpenDialog(uploadPanel);
+            if (flag == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                archivesNameField.setText(selectedFile.getAbsolutePath());
             }
         });
 
@@ -223,6 +205,7 @@ public class FileManageGUI {
                         }
 
                         //弹窗里的确认按钮
+                        jdialog.setLocationRelativeTo(null);
                         jdialog.setVisible(true);
                         button.addActionListener(new ActionListener() {
                             @Override

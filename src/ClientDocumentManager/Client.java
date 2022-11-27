@@ -23,10 +23,13 @@ public class Client extends JFrame {
     static String[][] UserData;
     static String[][] DocData;
     static int row1;
+
+    static  String Host;
     static int row2;
 
     public Client(String host) {
         super("Client");
+        Host = host;
     }
 
     public static void setDownLoadPath(String downLoadPath) {
@@ -49,7 +52,7 @@ public class Client extends JFrame {
 
     private void connectToSerever() throws IOException {
         displayMessage( "Attempting connection\n" );
-        client = new Socket( "127.0.0.1", 12340 );
+        client = new Socket( Host, 12345 );
         displayMessage( "Connected to: " + client.getInetAddress().getHostName() );
     }
 
@@ -72,20 +75,18 @@ public class Client extends JFrame {
                 jframe.dispose();
             }
             else if(message.equals("LOGIN_FALSE")) {
-
-                JOptionPane.showMessageDialog(null, "账号或密码错误","提示",JOptionPane.ERROR_MESSAGE);
-
+                //JOptionPane.showMessageDialog(null, "账号或密码错误","提示",JOptionPane.ERROR_MESSAGE);
+                System.out.println("Client.java//76行//账号或密码错误成功");
             }
             else if(message.equals("SELFCHANGE_TRUE")) {
-
-                JOptionPane.showMessageDialog(null, "修改成功","提示",JOptionPane.ERROR_MESSAGE);
+                //JOptionPane.showMessageDialog(null, "修改成功","提示",JOptionPane.ERROR_MESSAGE);
+                System.out.println("Client.java//80行//修改成功");
                 System.out.println("SELFCHANGE_SUCCESS");
 
             }
             else if(message.equals("SELFCHANGE_FALSE")) {
-
                 JOptionPane.showMessageDialog(null, "修改失败","提示",JOptionPane.ERROR_MESSAGE);
-
+                System.out.println("Client.java//86行//修改失败");
             }
             else if(message.equals("displayedUser")) {
 
@@ -113,52 +114,49 @@ public class Client extends JFrame {
                 row2 = i;
             }
             else if(message.equals("DELETE_TRUE")) {
-
-                JOptionPane.showMessageDialog(null, "删除成功","提示",JOptionPane.ERROR_MESSAGE);
-                jframe.dispose();
+                //JOptionPane.showMessageDialog(null, "删除成功","提示",JOptionPane.ERROR_MESSAGE);
+                System.out.println("Client.java//115行//删除成功");
+                //jframe.dispose();
                 System.out.println("DELETE_SUCCESS");
 
             }
             else if(message.equals("DELETE_FALSE")) {
-
-                JOptionPane.showMessageDialog(null, "账号错误","提示",JOptionPane.ERROR_MESSAGE);
-
+                //JOptionPane.showMessageDialog(null, "账号错误","提示",JOptionPane.ERROR_MESSAGE);
+                System.out.println("Client.java//122行//账号错误");
             }
             else if(message.equals("ADD_TRUE")) {
-
-                JOptionPane.showMessageDialog(null, "添加成功","提示",JOptionPane.ERROR_MESSAGE);
-                jframe.dispose();
+                //JOptionPane.showMessageDialog(null, "添加成功","提示",JOptionPane.INFORMATION_MESSAGE);
+                System.out.println("Client.java//126行//添加成功");
+                //jframe.dispose();
                 System.out.println("ADD_SUCCESS");
 
             }
             else if(message.equals("ADD_FALSE")) {
-
                 JOptionPane.showMessageDialog(null, "添加失败","提示",JOptionPane.ERROR_MESSAGE);
-
+                System.out.println("Client.java//133行//添加失败");
             }
             else if(message.equals("UPDATE_TRUE")) {
-
-                JOptionPane.showMessageDialog(null, "修改成功","提示",JOptionPane.ERROR_MESSAGE);
-                jframe.dispose();
+                //JOptionPane.showMessageDialog(null, "修改成功","提示",JOptionPane.INFORMATION_MESSAGE);
+                System.out.println("Client.java//141行//修改成功");
+                //jframe.dispose();
                 System.out.print("UPDATE_SUCCESS");
 
             }
             else if(message.equals("UPDATE_FALSE")) {
-
-                JOptionPane.showMessageDialog(null, "修改失败","提示",JOptionPane.ERROR_MESSAGE);
-
+                //JOptionPane.showMessageDialog(null, "修改失败","提示",JOptionPane.ERROR_MESSAGE);
+                System.out.println("Client.java//147行//修改失败");
             }
             else if(message.equals("UPLOAD_TRUE")) {
 
-                JOptionPane.showMessageDialog(null, "上传成功","提示",JOptionPane.ERROR_MESSAGE);
-                jframe.dispose();
+                //JOptionPane.showMessageDialog(null, "上传成功","提示",JOptionPane.ERROR_MESSAGE);
+                System.out.println("Client.java//153行//上传成功");
+                //jframe.dispose();
                 System.out.println("UPLOAD_SUCCESS");
 
             }
             else if(message.equals("UPLOAD_FALSE")) {
-
-                JOptionPane.showMessageDialog(null, "上传失败","提示",JOptionPane.ERROR_MESSAGE);
-
+                //JOptionPane.showMessageDialog(null, "上传失败","提示",JOptionPane.ERROR_MESSAGE);
+                System.out.println("Client.java//159行//上传失败");
             }
             else if(message.equals("SERVER>>> CLIENT_FILE_DOWN")) {
                 String filename = input.readUTF();
@@ -179,7 +177,8 @@ public class Client extends JFrame {
                     if(length >= fileLength) break;
                 }
                 System.out.println("----下载文件<" + filename + ">成功----");
-                JOptionPane.showMessageDialog(null, "下载成功","提示",JOptionPane.ERROR_MESSAGE);
+                //JOptionPane.showMessageDialog(null, "下载成功","提示",JOptionPane.ERROR_MESSAGE);
+                System.out.println("Client.java//182行//下载成功");
                 jframe.dispose();
             }
 
@@ -292,7 +291,8 @@ public class Client extends JFrame {
 
         jframe = frame;
         if(del_name.equals(user_name)) {
-            JOptionPane.showMessageDialog(null, "删除失败", "提示", JOptionPane.ERROR_MESSAGE);
+            System.out.println("Client.java//294行//删除失败");
+            //JOptionPane.showMessageDialog(null, "删除失败", "提示", JOptionPane.ERROR_MESSAGE);
         }
         else {
             output.writeUTF("USER_DELETE");

@@ -61,19 +61,10 @@ public class UserGUI {
         //注意到窗口关闭方式变化，如果是EXIT...会让所有页面都关闭，这里只想让他关闭一个页面
 
         if (index == 0) {
-            modifyPanel.removeAll();//清空组件，英文应该可以看懂，全部玩意！
-            deletePanel.removeAll();
-            addPanel.removeAll();
             getModifyUserGUI();
         }else if (index == 1) {
-            modifyPanel.removeAll();
-            deletePanel.removeAll();
-            addPanel.removeAll();
             getDeleteUserGUI();
         }else if (index == 2) {
-            modifyPanel.removeAll();
-            deletePanel.removeAll();
-            addPanel.removeAll();
             getAddUserGUI();
         }
 
@@ -85,9 +76,6 @@ public class UserGUI {
                 switch (selectedIndex) {
                     case 0:
                         try {
-                            modifyPanel.removeAll();
-                            deletePanel.removeAll();
-                            addPanel.removeAll();
                             getModifyUserGUI();
                         } catch (SQLException e1) {
                             System.out.println("UserGUI|getModifyUserGUI()出错了！！");
@@ -95,9 +83,6 @@ public class UserGUI {
                         break;
                     case 1:
                         try {
-                            modifyPanel.removeAll();
-                            deletePanel.removeAll();
-                            addPanel.removeAll();
                             getDeleteUserGUI();
                         } catch (SQLException e2) {
                             System.out.println("UserGUI|getDeleteUserGUI()出错了！！");
@@ -105,9 +90,6 @@ public class UserGUI {
                         break;
                     case 2 :
                         try {
-                            modifyPanel.removeAll();
-                            deletePanel.removeAll();
-                            addPanel.removeAll();
                             getAddUserGUI();
                         } catch (SQLException e3) {
                             System.out.println("UserGUI|getAddUserGUI()出错了！！");
@@ -121,6 +103,11 @@ public class UserGUI {
     }
 
     public static void getModifyUserGUI() throws SQLException {
+        modifyPanel.removeAll();//清空组件，英文应该可以看懂，全部玩意！
+        deletePanel.removeAll();
+        addPanel.removeAll();
+        userManageFrame.remove(deletePanel);
+        userManageFrame.remove(addPanel);
         setUser_name_role();
         try {
             Thread.sleep(100);
@@ -182,6 +169,11 @@ public class UserGUI {
     }
 
     public static void getDeleteUserGUI() throws SQLException {
+        modifyPanel.removeAll();//清空组件，英文应该可以看懂，全部玩意！
+        deletePanel.removeAll();
+        addPanel.removeAll();
+        userManageFrame.remove(modifyPanel);
+        userManageFrame.remove(addPanel);
         //画大表，在表里呈现所有元素，后面只需要选中即可
         setUser_name_role();//获得信息
         //Enumeration<User> e = DataProcessing.getAllUser();
@@ -239,6 +231,11 @@ public class UserGUI {
     }
 
     public static void getAddUserGUI() throws SQLException {
+        modifyPanel.removeAll();//清空组件，英文应该可以看懂，全部玩意！
+        deletePanel.removeAll();
+        addPanel.removeAll();
+        userManageFrame.remove(deletePanel);
+        userManageFrame.remove(modifyPanel);
         setUser_name_role();
         roleComboBox = new JComboBox<String>(usersRole);
         roleComboBox.setPreferredSize(new Dimension(150,24));
@@ -372,6 +369,7 @@ public class UserGUI {
                         e1.printStackTrace();
                     }
                 }
+                //是我自作多情了哎！
                 jdialog.setSize(200, 130);
                 JPanel dialogjp1 = new JPanel();
                 //JPanel jp2 =new JPanel();
@@ -387,6 +385,11 @@ public class UserGUI {
                     public void actionPerformed(ActionEvent e) {
                         dialog.dispose();
                         jdialog.dispose();
+                        try {
+                            getDeleteUserGUI();
+                        } catch (SQLException ex) {
+                            throw new RuntimeException(ex);
+                        }
                     }
                 });
             }

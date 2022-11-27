@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Timestamp;
@@ -21,7 +22,10 @@ public class Server {
     static User user;
 
     public Server() throws IOException{
-        server = new ServerSocket( 12340, 100 );
+        InetAddress liushen = InetAddress.getLocalHost();
+        String s = liushen.getHostAddress();
+        System.out.println("地址为："+s);
+        server = new ServerSocket( 12345, 100 );
         int count=1;
         while(true){
             displayMessage( "正在等待链接。。。\n" );
