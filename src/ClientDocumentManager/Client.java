@@ -7,6 +7,8 @@ import java.sql.SQLException;
 
 public class Client extends JFrame {
     static JFrame jframe;
+
+    static String DownLoadPath;
     static DataOutputStream output;
     static DataInputStream input;
     static String message = "";
@@ -25,6 +27,10 @@ public class Client extends JFrame {
 
     public Client(String host) {
         super("Client");
+    }
+
+    public static void setDownLoadPath(String downLoadPath) {
+        DownLoadPath = downLoadPath;
     }
 
     public void runClient() throws IOException {
@@ -58,7 +64,7 @@ public class Client extends JFrame {
     private void processConnection() throws IOException {
         do
         {
-            message = ( String ) input.readUTF();
+            message = input.readUTF();
             if(message.equals("LOGIN_TRUE")) {
                 user_role = input.readUTF();
                 MenuGUI menu = new MenuGUI();
@@ -85,16 +91,15 @@ public class Client extends JFrame {
 
                 int i = input.readInt();
                 UserData = new String[50][3];
-                for(int j=0; j<i; i++) {
+                for(int j=0; j<i; j++) {
                     UserData[j][0] = input.readUTF();
                     UserData[j][1] = input.readUTF();
                     UserData[j][2] = input.readUTF();
-
                 }
                 row1 = i;
 
             }
-            else if(message.equals("diaplayedDoc")) {
+            else if(message.equals("displayedDoc")) {
 
                 int i = input.readInt();
                 DocData = new String[50][5];
@@ -156,10 +161,9 @@ public class Client extends JFrame {
 
             }
             else if(message.equals("SERVER>>> CLIENT_FILE_DOWN")) {
-
                 String filename = input.readUTF();
                 long fileLength = input.readLong();
-                FileOutputStream fos = new FileOutputStream("/Users/air/Documents/java/downloadfile/"+filename);
+                FileOutputStream fos = new FileOutputStream(DownLoadPath+"\\"+filename);
 
                 byte[] sendBytes = new byte[1024];
                 int length = 0;
@@ -170,11 +174,9 @@ public class Client extends JFrame {
                     if(read == -1) break;
                     length += read;
                     System.out.println("下载文件进度"+ 100 * length * 1.0 / fileLength + "%...");
-
                     fos.write(sendBytes,0,read);
                     fos.flush();
                     if(length >= fileLength) break;
-
                 }
                 System.out.println("----下载文件<" + filename + ">成功----");
                 JOptionPane.showMessageDialog(null, "下载成功","提示",JOptionPane.ERROR_MESSAGE);
@@ -263,7 +265,8 @@ public class Client extends JFrame {
         user_name = name;
         output.flush();
         output.writeUTF(password);
-        user_password = password;output.flush();
+        user_password = password;
+        output.flush();
         jframe = frame;
     }
 
@@ -336,7 +339,6 @@ public class Client extends JFrame {
 //        }
 //        fis.close();
 //        fos.close();
-
         jframe=frame;
         output.writeUTF("UPLOAD");
         output.flush();
@@ -411,7 +413,7 @@ public class Client extends JFrame {
         output.flush();
     }
 
-    static void Display_Doc() throws IOException {
+     static void Display_Doc() throws IOException {
         output.writeUTF("displayDoc");
         output.flush();
     }

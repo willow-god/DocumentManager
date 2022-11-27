@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="connection@localhost" uuid="7cdfb04f-cd33-450f-9052-a7298eea74d0">
+    <data-source source="LOCAL" name="connection@localhost" uuid="be33c568-4a82-4b22-b49f-a2f08ffa6162">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
-      <remarks>My first Database</remarks>
+      <remarks>test in java</remarks>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/Users_Informations</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
+      <time-zone>CTT</time-zone>
     </data-source>
   </component>
 </project>

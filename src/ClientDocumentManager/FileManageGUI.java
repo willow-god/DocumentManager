@@ -1,8 +1,5 @@
 package ClientDocumentManager;
 
-import ServerDocumentManager.DataProcessing;
-import ServerDocumentManager.Doc;
-
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -219,12 +216,8 @@ public class FileManageGUI {
                         try {
                             Client.Upload(archivesNumber,uploaderName,archivesDescription,archivesName,archivesManageFrame);
                             //这里的原网站胡写了，所以写不了了~我把它一起集成在了上面的upload函数里面~
-
                             label.setText("文件上传成功！！！");
-                        } catch (IOException ex) {
-                            label.setText("文件上传失败!");
-                            ex.printStackTrace();
-                        } catch (SQLException ex) {
+                        } catch (IOException | SQLException ex) {
                             label.setText("文件上传失败!");
                             ex.printStackTrace();
                         }
@@ -261,21 +254,28 @@ public class FileManageGUI {
     }
 
     public static void getDownloadFileGUI() throws SQLException{
-        Enumeration <Doc> e = DataProcessing.getAllDocs();
+        //Enumeration <Doc> e = DataProcessing.getAllDocs();
         String []columnNames = {"档案号","档案号","时间","描述","文件名"};
-        String [][]tableValues = new String[100][5];
-        int i = 0;
-        //循环获取Docs里面的所有玩意放到string类型数组里
-        while (e.hasMoreElements()) {
-            Doc doc = e.nextElement();
-            String number =
-            tableValues[i][0] = doc.getID();
-            tableValues[i][1] = doc.getCreator();
-            tableValues[i][2] = doc.getTimestamp().toString();
-            tableValues[i][3] = doc.getDescription();
-            tableValues[i][4] = doc.getFilename();
-            i++;
+        String [][]tableValues;
+        try {
+            Client.Display_Doc();
+            Thread.sleep(100);
+            tableValues = Client.get_Docs();
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
         }
+//        int i = 0;
+//        //循环获取Docs里面的所有玩意放到string类型数组里
+//        while (e.hasMoreElements()) {
+//            Doc doc = e.nextElement();
+//            String number =
+//            tableValues[i][0] = doc.getID();
+//            tableValues[i][1] = doc.getCreator();
+//            tableValues[i][2] = doc.getTimestamp().toString();
+//            tableValues[i][3] = doc.getDescription();
+//            tableValues[i][4] = doc.getFilename();
+//            i++;
+//        }
 
         //添加表格，添加按钮等
         DefaultTableModel tableModel= new DefaultTableModel(tableValues,columnNames);
@@ -318,43 +318,45 @@ public class FileManageGUI {
                     jDialog.add(jp2);
 
                     try {
+                        Client.setDownLoadPath(fileChooser.getSelectedFile().getAbsolutePath());
                         Client.Download(ID,archivesManageFrame);
+                        label.setText("下载文件成功");
                     } catch (IOException ex) {
                         ex.printStackTrace();
+                        label.setText("下载文件失败");
                     }
-
-                    Doc doc = null;
-                    doc = DataProcessing.searchDoc(ID);
-                    if (doc == null) {
-                        System.out.println("下载文件失败");
-                    }
-                    try {
-                        String uploadpath = "D:\\DownLoad\\javatestdocument\\uploadfile\\";
-                        File srcFile = new File(doc.getFilename());
-                        String filename = srcFile.getName();
-                        File destFile = new File(fileChooser.getSelectedFile().getAbsolutePath() +"\\"+ filename);
-                        if (!(destFile.exists())) {
-                            destFile.createNewFile();
-                        }
-                        //FileInputStream fis = new FileInputStream(srcFile);
-                        //FileOutputStream fos = new FileOutputStream(destFile);
-
-                        BufferedInputStream fis = new BufferedInputStream(new FileInputStream(srcFile));
-                        BufferedOutputStream fos = new BufferedOutputStream(new FileOutputStream(destFile));
-
-                        byte[] buf = new byte[1024];
-                        int len = 0;
-                        while((len = fis.read(buf)) != -1) {
-                            fos.write(buf,0,len);
-                        }
-                        fos.flush();
-                        fis.close();
-                        fos.close();
-                        System.out.println("下载成功！");
-                    } catch (IOException ex) {
-                        label.setText("文件下载失败");
-                        ex.printStackTrace();
-                    }
+//                    Doc doc = null;
+//                    doc = DataProcessing.searchDoc(ID);
+//                    if (doc == null) {
+//                        System.out.println("下载文件失败");
+//                    }
+//                    try {
+//                        //String uploadpath = "D:\\DownLoad\\javatestdocument\\";
+//                        File srcFile = new File(doc.getFilename());
+//                        String filename = srcFile.getName();
+//                        File destFile = new File(fileChooser.getSelectedFile().getAbsolutePath() +"\\"+ filename);
+//                        if (!(destFile.exists())) {
+//                            destFile.createNewFile();
+//                        }
+//                        //FileInputStream fis = new FileInputStream(srcFile);
+//                        //FileOutputStream fos = new FileOutputStream(destFile);
+//
+//                        BufferedInputStream fis = new BufferedInputStream(new FileInputStream(srcFile));
+//                        BufferedOutputStream fos = new BufferedOutputStream(new FileOutputStream(destFile));
+//
+//                        byte[] buf = new byte[1024];
+//                        int len = 0;
+//                        while((len = fis.read(buf)) != -1) {
+//                            fos.write(buf,0,len);
+//                        }
+//                        fos.flush();
+//                        fis.close();
+//                        fos.close();
+//                        System.out.println("下载成功！");
+//                    } catch (IOException ex) {
+//                        label.setText("文件下载失败");
+//                        ex.printStackTrace();
+//                    }
                     jDialog.setVisible(true);
 
                     button.addActionListener(new ActionListener() {
@@ -375,5 +377,6 @@ public class FileManageGUI {
                 archivesManageFrame.dispose();
             }
         });
+        archivesManageFrame.setVisible(true);
     }
 }

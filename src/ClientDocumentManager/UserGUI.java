@@ -1,8 +1,5 @@
 package ClientDocumentManager;
 
-import ServerDocumentManager.DataProcessing;
-import ServerDocumentManager.User;
-
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -12,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Enumeration;
 
 public class UserGUI {
     //定义一堆玩意，具体功能自己看
@@ -126,6 +122,11 @@ public class UserGUI {
 
     public static void getModifyUserGUI() throws SQLException {
         setUser_name_role();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
+        }
         //下拉框，就是老师视频里的一大堆数据
         nameComboBox = new JComboBox<String>(usersName);
         roleComboBox = new JComboBox<String>(usersRole);
@@ -183,24 +184,35 @@ public class UserGUI {
     public static void getDeleteUserGUI() throws SQLException {
         //画大表，在表里呈现所有元素，后面只需要选中即可
         setUser_name_role();//获得信息
-        Enumeration<User> e = DataProcessing.getAllUser();
+        //Enumeration<User> e = DataProcessing.getAllUser();
         String []columnNames = {"用户名","密码","属性"};
-        String [][]tableValues = new String[100][3];
+//        try {
+//            Client.Display_user();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+        String [][]tableValues = Client.get_Users();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         int i = Client.get_Rows();
         //循环得到表里的各个数据，然后给放到所建立的数组里
-        while(e.hasMoreElements()){
-            User user = e.nextElement();
-            String userName = user.getName();
-            tableValues[i][0]=userName;
-            String userPassword = user.getPassword();
-            tableValues[i][1] = userPassword;
-            String userRole = user.getRole();
-            tableValues[i][2] = userRole;
-            i++;
-        }
+//        while(e.hasMoreElements()){
+//            User user = e.nextElement();
+//            String userName = user.getName();
+//            tableValues[i][0]=userName;
+//            String userPassword = user.getPassword();
+//            tableValues[i][1] = userPassword;
+//            String userRole = user.getRole();
+//            tableValues[i][2] = userRole;
+//            i++;
+//        }
 
         //现在才开始写GUI
         tableModel = new DefaultTableModel(tableValues,columnNames);
+        tableModel.setNumRows(i);
         table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setPreferredSize(new Dimension(250, 200));
@@ -228,7 +240,6 @@ public class UserGUI {
 
     public static void getAddUserGUI() throws SQLException {
         setUser_name_role();
-
         roleComboBox = new JComboBox<String>(usersRole);
         roleComboBox.setPreferredSize(new Dimension(150,24));
 
@@ -267,15 +278,19 @@ public class UserGUI {
     }
 
     public static void setUser_name_role() throws SQLException {
-        Enumeration<User> e = DataProcessing.getAllUser();
+        try {
+            Client.Display_user();
+            Thread.sleep(100);//这里由于Java线程默认让其并行，所以速度较快，然而这导致了无法正常录入信息
+        } catch (IOException | InterruptedException e1) {
+            throw new RuntimeException(e1);
+        }
+        String [][]e = Client.get_Users();
+        int nIndex = Client.get_Rows();
         usersRole = new String[]{"administrator","operator","browser"};
         usersName = new String[100];
         int i = 0;
-        while(e.hasMoreElements()){
-            User user = e.nextElement();
-            String userName = user.getName();
-            usersName[i] = userName;
-            i++;
+        for (int iox = 0;iox<nIndex;iox++){
+            usersName[iox] = e[iox][0];
         }
     }
 
@@ -358,14 +373,14 @@ public class UserGUI {
                     }
                 }
                 jdialog.setSize(200, 130);
-                JPanel jp1 = new JPanel();
-                JPanel jp2 =new JPanel();
-                jdialog.add(jp1);
-                jdialog.add(jp2);
-                jdialog.setVisible(true);
-                jp1.add(label);
+                JPanel dialogjp1 = new JPanel();
+                //JPanel jp2 =new JPanel();
+                dialogjp1.add(label);
                 JButton button = new JButton("确定");
-                jp2.add(button);
+                dialogjp1.add(button);
+                jdialog.add(dialogjp1);
+                //jdialog.add(jp2);
+                jdialog.setVisible(true);
 
                 button.addActionListener(new ActionListener(){
                     @Override

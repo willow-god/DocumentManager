@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.sql.Timestamp;
 import java.sql.SQLException;
 import java.util.Enumeration;
+import java.util.Objects;
 import javax.swing.SwingUtilities;
 
 public class Server {
@@ -23,11 +24,11 @@ public class Server {
         server = new ServerSocket( 12340, 100 );
         int count=1;
         while(true){
-            displayMessage( "Waiting for connection\n" );
+            displayMessage( "正在等待链接。。。\n" );
             Socket connection = server.accept(); // allow server to accept connection
-            displayMessage( "Connection " + count + " received from: " +
+            displayMessage( "连接 " + count + " 已经从此处建立连接：" +
                     connection.getInetAddress().getHostName() );
-            new ServerThread(connection,"Thread"+count++);
+               new ServerThread(connection,"Thread"+count++);//直接实现了多线程
         }
     }
 
@@ -61,18 +62,12 @@ public class Server {
         }
 
         public void run() {
-
-
-
-
             String message = "Connection successful";
             sendData( message );
-
             try {
-                do
-                {
-                    message = ( String ) input.readUTF();
-                    if(message.equals("CLIENT>>> CLIENT_LOGIN")) {
+                do {
+                    message = input.readUTF();
+                    if(message.equals("CLIENT>>> CLIENT_LOGIN")) {//这条信息就是传递的参数，我们需要得到这条信息在服务端，然后服务端将数据发出
                         String name = input.readUTF();
                         String password = input.readUTF();
                         if(DataProcessing.search(name, password) != null) {
@@ -96,7 +91,7 @@ public class Server {
                         String password=input.readUTF();
                         String role=input.readUTF();
                         System.out.println("CLIENT_SELF_MOD");
-                        if(DataProcessing.update(name,password,role) == true) {
+                        if(DataProcessing.update(name, password, role)) {
                             output.writeUTF("SELFCHANGE_TRUE");
                             output.flush();
                             output.writeUTF(password);
@@ -218,8 +213,8 @@ public class Server {
                         String Creator=input.readUTF();
                         String description=input.readUTF();
                         String filename=input.readUTF();
-                        Long fileLength=input.readLong();
-                        FileOutputStream fos=new FileOutputStream(new File("/Users/air/Documents/java/uploadfile/"+filename));
+                        long fileLength=input.readLong();
+                        FileOutputStream fos=new FileOutputStream(new File("D:\\DownLoad\\javatestdocument\\"+filename));
                         DataInputStream dis=new DataInputStream(connection.getInputStream());
                         byte[] sendBytes=new byte[1024];
                         int transLen=0;
@@ -251,10 +246,10 @@ public class Server {
                         output.writeUTF("SERVER>>> CLIENT_FILE_DOWN");
                         output.flush();
                         System.out.println("SERVER>>> CLIENT_FILE_DOWN");
-                        String filename=DataProcessing.searchDoc(ID).getFilename();
+                        String filename= Objects.requireNonNull(DataProcessing.searchDoc(ID)).getFilename();
                         output.writeUTF(filename);
                         output.flush();
-                        String filepath="/Users/air/Documents/java/uploadfile/";
+                        String filepath="D:\\DownLoad\\javatestdocument\\";
                         File file=new File(filepath+filename);
                         long fileLength=file.length();
                         output.writeLong(fileLength);
@@ -266,21 +261,16 @@ public class Server {
                             output.write(sendBytes,0,length);
                             output.flush();
                         }
-
                     }
                     else {
                         displayMessage(message);
                     }
-
                 } while ( !message.equals( "CLIENT>>> TERMINATE" ) );
 
             }catch(IOException e) {
-
             } catch (SQLException e1) {
-                // TODO Auto-generated catch block
                 e1.printStackTrace();
             }
-
         }
     }
 
@@ -333,13 +323,7 @@ public class Server {
     void displayMessage( String messageToDisplay )
     {
         SwingUtilities.invokeLater(
-                new Runnable()
-                {
-                    public void run()
-                    {
-                        System.out.println( messageToDisplay );
-                    }
-                }
+                () -> System.out.println( messageToDisplay )
         );
     }
 
