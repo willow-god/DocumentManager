@@ -494,9 +494,9 @@ public class UserGUI {
         jp4.add(cancelButton);
 
         addPanel.add(new JPanel());
+        addPanel.add(jp3);
         addPanel.add(jp1);
         addPanel.add(jp2);
-        addPanel.add(jp3);
         addPanel.add(new JPanel());
         addPanel.add(jp4);
 
