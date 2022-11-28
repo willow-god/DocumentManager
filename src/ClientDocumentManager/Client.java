@@ -68,118 +68,118 @@ public class Client extends JFrame {
         do
         {
             message = input.readUTF();
-            if(message.equals("LOGIN_TRUE")) {
-                user_role = input.readUTF();
-                MenuGUI menu = new MenuGUI();
-                menu.playMenu();
-                jframe.dispose();
-            }
-            else if(message.equals("LOGIN_FALSE")) {
-                //JOptionPane.showMessageDialog(null, "账号或密码错误","提示",JOptionPane.ERROR_MESSAGE);
-                System.out.println("Client.java//76行//账号或密码错误成功");
-            }
-            else if(message.equals("SELFCHANGE_TRUE")) {
-                //JOptionPane.showMessageDialog(null, "修改成功","提示",JOptionPane.ERROR_MESSAGE);
-                System.out.println("Client.java//80行//修改成功");
-                System.out.println("SELFCHANGE_SUCCESS");
-
-            }
-            else if(message.equals("SELFCHANGE_FALSE")) {
-                JOptionPane.showMessageDialog(null, "修改失败","提示",JOptionPane.ERROR_MESSAGE);
-                System.out.println("Client.java//86行//修改失败");
-            }
-            else if(message.equals("displayedUser")) {
-
-                int i = input.readInt();
-                UserData = new String[50][3];
-                for(int j=0; j<i; j++) {
-                    UserData[j][0] = input.readUTF();
-                    UserData[j][1] = input.readUTF();
-                    UserData[j][2] = input.readUTF();
+            switch (message) {
+                case "LOGIN_TRUE" -> {
+                    user_role = input.readUTF();
+                    MenuGUI.playMenu();
+                    jframe.dispose();
                 }
-                row1 = i;
-
-            }
-            else if(message.equals("displayedDoc")) {
-
-                int i = input.readInt();
-                DocData = new String[50][5];
-                for(int j=0; j<i; j++) {
-                    DocData[j][0] = input.readUTF();
-                    DocData[j][1] = input.readUTF();
-                    DocData[j][2] = input.readUTF();
-                    DocData[j][3] = input.readUTF();
-                    DocData[j][4] = input.readUTF();
+                case "LOGIN_FALSE" -> {
+                    System.out.println("Client.java//76行//账号或密码错误");
+                    JOptionPane.showMessageDialog(null, "账号或密码错误", "提示", JOptionPane.ERROR_MESSAGE);
+                    jframe.dispose();
+                    LoginGUI.systemLogin();
                 }
-                row2 = i;
-            }
-            else if(message.equals("DELETE_TRUE")) {
-                //JOptionPane.showMessageDialog(null, "删除成功","提示",JOptionPane.ERROR_MESSAGE);
-                System.out.println("Client.java//115行//删除成功");
-                //jframe.dispose();
-                System.out.println("DELETE_SUCCESS");
-
-            }
-            else if(message.equals("DELETE_FALSE")) {
-                //JOptionPane.showMessageDialog(null, "账号错误","提示",JOptionPane.ERROR_MESSAGE);
-                System.out.println("Client.java//122行//账号错误");
-            }
-            else if(message.equals("ADD_TRUE")) {
-                //JOptionPane.showMessageDialog(null, "添加成功","提示",JOptionPane.INFORMATION_MESSAGE);
-                System.out.println("Client.java//126行//添加成功");
-                //jframe.dispose();
-                System.out.println("ADD_SUCCESS");
-
-            }
-            else if(message.equals("ADD_FALSE")) {
-                JOptionPane.showMessageDialog(null, "添加失败","提示",JOptionPane.ERROR_MESSAGE);
-                System.out.println("Client.java//133行//添加失败");
-            }
-            else if(message.equals("UPDATE_TRUE")) {
-                //JOptionPane.showMessageDialog(null, "修改成功","提示",JOptionPane.INFORMATION_MESSAGE);
-                System.out.println("Client.java//141行//修改成功");
-                //jframe.dispose();
-                System.out.print("UPDATE_SUCCESS");
-
-            }
-            else if(message.equals("UPDATE_FALSE")) {
-                //JOptionPane.showMessageDialog(null, "修改失败","提示",JOptionPane.ERROR_MESSAGE);
-                System.out.println("Client.java//147行//修改失败");
-            }
-            else if(message.equals("UPLOAD_TRUE")) {
-
-                //JOptionPane.showMessageDialog(null, "上传成功","提示",JOptionPane.ERROR_MESSAGE);
-                System.out.println("Client.java//153行//上传成功");
-                //jframe.dispose();
-                System.out.println("UPLOAD_SUCCESS");
-
-            }
-            else if(message.equals("UPLOAD_FALSE")) {
-                //JOptionPane.showMessageDialog(null, "上传失败","提示",JOptionPane.ERROR_MESSAGE);
-                System.out.println("Client.java//159行//上传失败");
-            }
-            else if(message.equals("SERVER>>> CLIENT_FILE_DOWN")) {
-                String filename = input.readUTF();
-                long fileLength = input.readLong();
-                FileOutputStream fos = new FileOutputStream(DownLoadPath+"\\"+filename);
-
-                byte[] sendBytes = new byte[1024];
-                int length = 0;
-                System.out.println("----开始下载文件<"+filename+">,文件大小为<"+length+">----");
-                while(true) {
-                    int read = 0;
-                    read = input.read(sendBytes);
-                    if(read == -1) break;
-                    length += read;
-                    System.out.println("下载文件进度"+ 100 * length * 1.0 / fileLength + "%...");
-                    fos.write(sendBytes,0,read);
-                    fos.flush();
-                    if(length >= fileLength) break;
+                case "SELFCHANGE_TRUE" -> {
+                    //JOptionPane.showMessageDialog(null, "修改成功","提示",JOptionPane.ERROR_MESSAGE);
+                    System.out.println("Client.java//80行//修改成功");
+                    System.out.println("SELFCHANGE_SUCCESS");
                 }
-                System.out.println("----下载文件<" + filename + ">成功----");
-                //JOptionPane.showMessageDialog(null, "下载成功","提示",JOptionPane.ERROR_MESSAGE);
-                System.out.println("Client.java//182行//下载成功");
-                jframe.dispose();
+                case "SELFCHANGE_FALSE" -> {
+                    JOptionPane.showMessageDialog(null, "修改失败", "提示", JOptionPane.ERROR_MESSAGE);
+                    System.out.println("Client.java//86行//修改失败");
+                }
+                case "displayedUser" -> {
+
+                    int i = input.readInt();
+                    UserData = new String[50][3];
+                    for (int j = 0; j < i; j++) {
+                        UserData[j][0] = input.readUTF();
+                        UserData[j][1] = input.readUTF();
+                        UserData[j][2] = input.readUTF();
+                    }
+                    row1 = i;
+
+                    break;
+                }
+                case "displayedDoc" -> {
+
+                    int i = input.readInt();
+                    DocData = new String[50][5];
+                    for (int j = 0; j < i; j++) {
+                        DocData[j][0] = input.readUTF();
+                        DocData[j][1] = input.readUTF();
+                        DocData[j][2] = input.readUTF();
+                        DocData[j][3] = input.readUTF();
+                        DocData[j][4] = input.readUTF();
+                    }
+                    row2 = i;
+                    break;
+                }
+                case "DELETE_TRUE" -> {
+                    //JOptionPane.showMessageDialog(null, "删除成功","提示",JOptionPane.ERROR_MESSAGE);
+                    System.out.println("Client.java//115行//删除成功");
+
+                    //jframe.dispose();
+                    System.out.println("DELETE_SUCCESS");
+                }
+                case "DELETE_FALSE" ->
+                    //JOptionPane.showMessageDialog(null, "账号错误","提示",JOptionPane.ERROR_MESSAGE);
+                        System.out.println("Client.java//122行//账号错误");
+                case "ADD_TRUE" -> {
+                    //JOptionPane.showMessageDialog(null, "添加成功","提示",JOptionPane.INFORMATION_MESSAGE);
+                    System.out.println("Client.java//126行//添加成功");
+
+                    //jframe.dispose();
+                    System.out.println("ADD_SUCCESS");
+                }
+                case "ADD_FALSE" -> {
+                    JOptionPane.showMessageDialog(null, "添加失败", "提示", JOptionPane.ERROR_MESSAGE);
+                    System.out.println("Client.java//133行//添加失败");
+                }
+                case "UPDATE_TRUE" -> {
+                    //JOptionPane.showMessageDialog(null, "修改成功","提示",JOptionPane.INFORMATION_MESSAGE);
+                    System.out.println("Client.java//141行//修改成功");
+
+                    //jframe.dispose();
+                    System.out.print("UPDATE_SUCCESS");
+                }
+                case "UPDATE_FALSE" ->
+                    //JOptionPane.showMessageDialog(null, "修改失败","提示",JOptionPane.ERROR_MESSAGE);
+                        System.out.println("Client.java//147行//修改失败");
+                case "UPLOAD_TRUE" -> {
+
+                    //JOptionPane.showMessageDialog(null, "上传成功","提示",JOptionPane.ERROR_MESSAGE);
+                    System.out.println("Client.java//153行//上传成功");
+
+                    //jframe.dispose();
+                    System.out.println("UPLOAD_SUCCESS");
+                }
+                case "UPLOAD_FALSE" ->
+                    //JOptionPane.showMessageDialog(null, "上传失败","提示",JOptionPane.ERROR_MESSAGE);
+                        System.out.println("Client.java//159行//上传失败");
+                case "SERVER>>> CLIENT_FILE_DOWN" -> {
+                    String filename = input.readUTF();
+                    long fileLength = input.readLong();
+                    FileOutputStream fos = new FileOutputStream(DownLoadPath + "\\" + filename);
+                    byte[] sendBytes = new byte[1024];
+                    int length = 0;
+                    System.out.println("----开始下载文件<" + filename + ">,文件大小为<" + length + ">----");
+                    while (true) {
+                        int read = 0;
+                        read = input.read(sendBytes);
+                        if (read == -1) break;
+                        length += read;
+                        System.out.println("下载文件进度" + 100 * length * 1.0 / fileLength + "%...");
+                        fos.write(sendBytes, 0, read);
+                        fos.flush();
+                        if (length >= fileLength) break;
+                    }
+                    System.out.println("----下载文件<" + filename + ">成功----");
+                    //JOptionPane.showMessageDialog(null, "下载成功","提示",JOptionPane.ERROR_MESSAGE);
+                    System.out.println("Client.java//182行//下载成功");
+                    jframe.dispose();
+                }
             }
 
         } while ( !message.equals( "SERVER>>> TERMINATE" ) );
@@ -202,19 +202,20 @@ public class Client extends JFrame {
         }
     }
 
-    static void sendData( String message )
-    {
-        try
-        {
-            output.writeUTF( "CLIENT>>> " + message );
-            output.flush();
-            displayMessage( "\nCLIENT>>> " + message );
-        }
-        catch ( IOException ioException )
-        {
-            System.out.println( "\nError writing object" );
-        }
-    }
+    //这个函数可以使用也可以不使用，这里我就不使用了
+//    static void sendData( String message )
+//    {
+//        try
+//        {
+//            output.writeUTF( "CLIENT>>> " + message );
+//            output.flush();
+//            displayMessage( "\nCLIENT>>> " + message );
+//        }
+//        catch ( IOException ioException )
+//        {
+//            System.out.println( "\nError writing object" );
+//        }
+//    }
 
     static void displayMessage( String messageToDisplay )
     {
@@ -356,7 +357,7 @@ public class Client extends JFrame {
         output.writeLong(fileLength);
         output.flush();
         FileInputStream fis=new FileInputStream(file);
-        DataOutputStream dos=new DataOutputStream(client.getOutputStream());
+        //DataOutputStream dos=new DataOutputStream(client.getOutputStream());
         byte[] sendBytes=new byte[1024];
         int length=0;
         while((length=fis.read(sendBytes,0,sendBytes.length))>0) {

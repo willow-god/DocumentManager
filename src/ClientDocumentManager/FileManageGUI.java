@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.sql.SQLException;
-import java.util.Enumeration;
 
 public class FileManageGUI {
     static JFrame archivesManageFrame = new JFrame("文件管理页面");
@@ -34,7 +33,6 @@ public class FileManageGUI {
         //获取这个人的身份，后面要用，比如上传的时候需要本人身份姓名等信息
         String userRole = Client.get_Role();
         if (userRole.equalsIgnoreCase("administrator")
-        ||userRole.equalsIgnoreCase("operator")
         ||userRole.equalsIgnoreCase("browser")){
             //代码应该是文字不能够被更改的意思~没有查到该函数的作用~
             tabbedPane.setEnabledAt(0,false);
@@ -61,12 +59,12 @@ public class FileManageGUI {
             public void stateChanged(ChangeEvent e) {
                 int selectedIndex = tabbedPane.getSelectedIndex();
                 switch (selectedIndex) {
-                    case 0 :
+                    case 0 -> {
                         uploadPanel.removeAll();
                         downloadPanel.removeAll();
                         getUploadFileGUI();
-                        break;
-                    case 1 :
+                    }
+                    case 1 -> {
                         uploadPanel.removeAll();
                         downloadPanel.removeAll();
                         try {
@@ -74,9 +72,9 @@ public class FileManageGUI {
                         } catch (SQLException e1) {
                             e1.printStackTrace();
                         }
-                        break;
-                    default :
-                        break;
+                    }
+                    default -> {
+                    }
                 }
             }
         });
@@ -264,6 +262,8 @@ public class FileManageGUI {
         DefaultTableModel tableModel= new DefaultTableModel(tableValues,columnNames);
         final JTable table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
+        int rows = Client.get_Rows2();
+        tableModel.setRowCount(rows);
         JButton downloadButton = new JButton("下载");
         JButton cancelButton = new JButton("取消");
         downloadPanel.setLayout(new BorderLayout());
@@ -282,7 +282,7 @@ public class FileManageGUI {
                 } else {
                     JFileChooser fileChooser = new JFileChooser();
                     fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                    int flag = fileChooser.showSaveDialog(downloadPanel);
+                    //int flag = fileChooser.showSaveDialog(downloadPanel);
                     String ID = table.getValueAt(row,0).toString();
                     final JDialog jDialog = new JDialog();
                     jDialog.setTitle("提示");

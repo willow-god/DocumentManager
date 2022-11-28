@@ -2,8 +2,6 @@ package ClientDocumentManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class LoginGUI {
@@ -47,26 +45,20 @@ public class LoginGUI {
         loginframe.setLocationRelativeTo(null);
 
         //登录按钮事件监视器
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String loginName = nameFiled.getText();
-                String loginPassword = String.valueOf(passwordField.getPassword());
-                try {
-                    Client.Login(loginName,loginPassword,loginframe);
-                } catch (IOException e1) {
-                    loginframe.dispose();
-                    systemLogin();
-                }
+        loginButton.addActionListener(e -> {
+            String loginName = nameFiled.getText();
+            String loginPassword = String.valueOf(passwordField.getPassword());
+            try {
+                Client.Login(loginName,loginPassword,loginframe);
+            } catch (IOException e1) {
+                loginframe.dispose();
+                systemLogin();
             }
         });
 
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                loginframe.dispose();
-                System.exit(0);
-            }
+        cancelButton.addActionListener(e -> {
+            loginframe.dispose();
+            System.exit(0);
         });
     }
 

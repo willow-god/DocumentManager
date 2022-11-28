@@ -21,7 +21,7 @@ public class MenuGUI {
 
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();      //获得屏幕大小
-        menuframe.setSize(dimension.width/2,dimension.height/2);
+        menuframe.setSize(dimension.width/3,dimension.height/3);
         menuframe.setLocationRelativeTo(null);
 
         //管理菜单
@@ -38,26 +38,26 @@ public class MenuGUI {
         menuframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         String role = Client.get_Role();
-        String name = Client.get_Name();
-        switch(role) {
-            case "administrator":
+        //String name = Client.get_Name();
+        switch (role) {
+            case "administrator" -> {
                 menuframe.setTitle("系统管理员界面");
                 fileMenu.getItem(0).setEnabled(false);
-                break;
-            case "browser":
+            }
+            case "browser" -> {
                 menuframe.setTitle("档案浏览员界面");
                 userMenu.getItem(0).setEnabled(false);
                 userMenu.getItem(1).setEnabled(false);
                 userMenu.getItem(2).setEnabled(false);
-                break;
-            case "operator" :
+            }
+            case "operator" -> {
                 menuframe.setTitle("档案录入员界面");
                 userMenu.getItem(0).setEnabled(false);
                 userMenu.getItem(1).setEnabled(false);
                 userMenu.getItem(2).setEnabled(false);
-                break;
-            default :
-                break;
+            }
+            default -> {
+            }
         }
 
         userMenu.getItem(0).addActionListener(new ActionListener() {
