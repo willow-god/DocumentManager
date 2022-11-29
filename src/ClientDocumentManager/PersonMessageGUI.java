@@ -90,13 +90,16 @@ public class PersonMessageGUI {
                 String oldPassword = String.valueOf(oldPasswordField.getPassword());
                 String newPassword = String.valueOf(newPasswordField.getPassword());
                 String newPassword2 = String.valueOf(newPasswordField2.getPassword());
-                //String role = roleField.getText();
 
+                //String role = roleField.getText();
                 try {
                     Client.ChangeSelfInfo(oldPassword, newPassword, newPassword2);
                 } catch (IOException | SQLException e1) {
                     e1.printStackTrace();
                 }
+                oldPasswordField.setText(null);
+                newPasswordField.setText(null);
+                newPasswordField2.setText(null);
             }
         });
 

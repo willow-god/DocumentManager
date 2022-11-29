@@ -80,12 +80,12 @@ public class Client extends JFrame {
                     LoginGUI.systemLogin();
                 }
                 case "SELFCHANGE_TRUE" -> {
-                    //JOptionPane.showMessageDialog(null, "修改成功","提示",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "修改成功","提示",JOptionPane.INFORMATION_MESSAGE);
                     System.out.println("Client.java//80行//修改成功");
                     System.out.println("SELFCHANGE_SUCCESS");
                 }
                 case "SELFCHANGE_FALSE" -> {
-                    JOptionPane.showMessageDialog(null, "修改失败", "提示", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "修改失败，可能是原密码输入错误，请检查后重新操作", "提示", JOptionPane.ERROR_MESSAGE);
                     System.out.println("Client.java//86行//修改失败");
                 }
                 case "displayedUser" -> {
