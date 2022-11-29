@@ -7,7 +7,6 @@ import java.sql.SQLException;
 
 public class Client extends JFrame {
     static JFrame jframe;
-
     static String DownLoadPath;
     static DataOutputStream output;
     static DataInputStream input;
