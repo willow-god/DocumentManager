@@ -20,7 +20,7 @@ public class FileManageGUI {
 
     public static void playArchivesManageGUI(int index) {
         //点开档案选中框之后，上方的便捷切换按钮
-        archivesManageFrame.setSize(450,250);
+        archivesManageFrame.setSize(450,350);
         archivesManageFrame.setLocationRelativeTo(null);
         frameWidth = archivesManageFrame.getWidth();
         frameHeight = archivesManageFrame.getHeight();
@@ -87,51 +87,80 @@ public class FileManageGUI {
 
     public static void getUploadFileGUI(){
         //又开始GUI了……这个是上传的GUI
-        JLabel archivesNumberLabel = new JLabel("档案号");
-        JLabel archivesDescriptionLabel = new JLabel("档案描述:");
-        JLabel archivesNameLabel = new JLabel("档案文件名:");
+        JLabel archivesNumberLabel = new JLabel("档 案 号");
+        JLabel archivesDescriptionLabel = new JLabel("档案 描述:");
+        JLabel archivesNameLabel = new JLabel("文 件 名:");
+
         //文本输入框，文献档案号
         final JTextField archivesNumberField = new JTextField(12);
-        //显示纯文本的多行区域~
-        final JTextArea archivesDescriptionArea = new JTextArea(4,12);
+        final JTextArea archivesDescriptionArea = new JTextArea(4,12);//显示纯文本的多行区域~
         archivesDescriptionArea.setLineWrap(true);//自动换行功能
         final JTextField archivesNameField = new JTextField(12);//上传者姓名
-        JButton openButton = new JButton("打开");
-        JButton uploadButton = new JButton("上传");
-        JButton cancelButton = new JButton("取消");
+
+        JButton getArchivesNumButton = new JButton("获取档案号");
+        JButton openButton = new JButton("打开文件名");
+        JButton uploadButton = new JButton("上 传");
+        JButton cancelButton = new JButton("取 消");
 
         //这里要素比较多，如果记不住，可以搞一个本子画一下
-        uploadPanel.setLayout(new GridLayout(4,3,5,5));
-        JPanel panel1 = new JPanel();
-        panel1.add(archivesNumberLabel);
-        uploadPanel.add(panel1);
-        JPanel panel2 = new JPanel();
-        panel2.add(archivesNumberField);
-        uploadPanel.add(panel2);
+        uploadPanel.setLayout(new GridLayout(7,3));
+
+        uploadPanel.add(new JPanel());//第一行,空白
         uploadPanel.add(new JPanel());
-        JPanel panel3 = new JPanel();
-        panel3.add(archivesDescriptionLabel);
-        uploadPanel.add(panel3);
-        JScrollPane panel4 = new JScrollPane(archivesDescriptionArea);
-        //滚动条，显示所有文档嗷嗷嗷
-        uploadPanel.add(panel4);
         uploadPanel.add(new JPanel());
-        JPanel panel5 = new JPanel();
-        panel5.add(archivesNameLabel);
-        uploadPanel.add(panel5);
-        JPanel panel6 = new JPanel();
-        panel6.add(archivesNameField);
-        uploadPanel.add(panel6);
-        JPanel panel7 = new JPanel();
-        panel7.add(openButton);
-        uploadPanel.add(panel7);
-        JPanel panel8 = new JPanel();
-        panel8.add(uploadButton);
-        uploadPanel.add(panel8);
+
+        JPanel panel22 = new JPanel();//第二行，档案号
+        panel22.add(archivesNumberLabel);
+        JPanel panel23 = new JPanel();
+        JPanel panel24 = new JPanel();
+        panel23.add(archivesNumberField);
+        panel24.add(getArchivesNumButton);
+        uploadPanel.add(panel22);
+        uploadPanel.add(panel23);
+        uploadPanel.add(panel24);
+
+        JPanel panel32 = new JPanel();//第三行，文件
+        panel32.add(archivesNameLabel);
+        JPanel panel33 = new JPanel();
+        JPanel panel34 = new JPanel();
+        panel33.add(archivesNameField);
+        panel34.add(openButton);
+        uploadPanel.add(panel32);
+        uploadPanel.add(panel33);
+        uploadPanel.add(panel34);
+
+        JPanel panel42 = new JPanel();//第四行，档案描述
+        panel42.add(archivesDescriptionLabel);
+        JScrollPane panel43 = new JScrollPane(archivesDescriptionArea);//滚动条，显示所有文档嗷嗷嗷
+        uploadPanel.add(panel42);
+        uploadPanel.add(panel43);
         uploadPanel.add(new JPanel());
-        JPanel panel9 = new JPanel();
-        panel9.add(cancelButton);
-        uploadPanel.add(panel9);
+
+        //第五行，留空
+        uploadPanel.add(new JPanel());
+        uploadPanel.add(new JPanel());
+        uploadPanel.add(new JPanel());
+
+        //第六行，两个按钮
+        JPanel panel63 = new JPanel();
+        panel63.add(cancelButton);
+        panel63.add(uploadButton);
+        uploadPanel.add(new JPanel());
+        uploadPanel.add(panel63);
+        uploadPanel.add(new JPanel());
+
+        getArchivesNumButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Client.Display_Doc();
+                    Thread.sleep(100);
+                } catch (IOException | InterruptedException o) {
+                    throw new RuntimeException(o);
+                }
+                archivesNumberField.setText(String.valueOf(Client.get_Rows2()+1));
+            }
+        });
 
         openButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
@@ -210,6 +239,9 @@ public class FileManageGUI {
                             public void actionPerformed(ActionEvent e) {
                                 dialog.dispose();
                                 jdialog.dispose();
+                                archivesNumberField.setText(null);
+                                archivesDescriptionArea.setText(null);
+                                archivesNameField.setText(null);
                             }
                         });
                     }
@@ -341,7 +373,6 @@ public class FileManageGUI {
 //                        ex.printStackTrace();
 //                    }
                     jDialog.setVisible(true);
-
                     button.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {

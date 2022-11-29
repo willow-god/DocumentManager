@@ -15,9 +15,12 @@ public class MenuGUI {
         JMenu userMenu = new JMenu("用户管理");
         JMenu fileMenu = new JMenu("档案管理");
         JMenu personMessageMenu = new JMenu("个人信息管理");
+        JMenu exitMenu = new JMenu("登陆管理");
+
         menuBar.add(userMenu);
         menuBar.add(fileMenu);
         menuBar.add(personMessageMenu);
+        menuBar.add(exitMenu);
 
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();      //获得屏幕大小
@@ -31,6 +34,9 @@ public class MenuGUI {
 
         fileMenu.add(new JMenuItem("档案上传"));
         fileMenu.add(new JMenuItem("档案下载"));
+
+        exitMenu.add(new JMenuItem("切换账号"));
+        exitMenu.add(new JMenuItem("直接退出"));
 
         personMessageMenu.add(new JMenuItem("信息修改"));
 
@@ -118,6 +124,22 @@ public class MenuGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 PersonMessageGUI.playPersonMessageManageGUI();
+            }
+        });
+
+        exitMenu.getItem(0).addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                menuframe.dispose();
+                LoginGUI.systemLogin();
+            }
+        });
+
+        exitMenu.getItem(1).addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                menuframe.dispose();
+                System.exit(0);
             }
         });
     }

@@ -5,6 +5,8 @@ import java.awt.*;
 import java.io.IOException;
 
 public class LoginGUI {
+
+    static final String ConnectedHost = "127.0.0.1";
     public static void systemLogin() {
         JFrame loginframe = new JFrame("WUT·档案管理系统");
         loginframe.setSize(300,220);
@@ -16,19 +18,23 @@ public class LoginGUI {
 
         //用户填写用户名的组件
         JLabel nameLabel = new JLabel("用户:  ");
+        nameLabel.setFont(new Font("黑体",Font.BOLD,15));
         JTextField nameFiled = new JTextField(13);
         jp1.add(nameLabel);
         jp1.add(nameFiled);
 
         //用户填写密码的组件
         JLabel passwordLabel = new JLabel("密码:  ");
+        passwordLabel.setFont(new Font("黑体",Font.BOLD,15));
         JPasswordField passwordField = new JPasswordField(13);
         jp2.add(passwordLabel);
         jp2.add(passwordField);
 
         //登录，取消按钮
         JButton loginButton = new JButton("登录");
+        loginButton.setFont(new Font("黑体",Font.BOLD,15));
         JButton cancelButton = new JButton("取消");
+        cancelButton.setFont(new Font("黑体",Font.BOLD,15));
         jp3.add(loginButton);
         jp3.add(cancelButton);
 
@@ -66,7 +72,7 @@ public class LoginGUI {
         Client application;
         systemLogin();
         if (args.length == 0)
-            application = new Client("127.0.0.1");
+            application = new Client(ConnectedHost);
         else
             application = new Client(args[ 0 ]);
         application.runClient();

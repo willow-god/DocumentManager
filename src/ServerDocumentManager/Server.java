@@ -276,7 +276,7 @@ public class Server {
                 } while ( !message.equals( "CLIENT>>> TERMINATE" ) );
 
             }catch(IOException e) {
-                System.out.println("Server.java//275line//报错了");
+                System.out.println("Server.java//275line//程序可能结束了，如果为非正常结束，请检查客户端是否正常运行");
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
